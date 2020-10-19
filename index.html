@@ -22,16 +22,43 @@
     #weather-info{
         margin-left:10px;
     }
+    .body{
+        background-color:darkblue;
+        background-image:radial-gradient(rgb(118,182,250),rgb(16,43,82));
+    
+
+    }
+    .card{
+        background-color:rgb(65, 118, 158);
+        color:antiquewhite;
+        font-family: 'Courier New', Courier, monospace;
+        
+    }
+    #current-weather{
+        font-weight:bolder;
+
+    }
+    #cityHistory{
+        background-color:lightgrey;
+    }
+    #Title{
+        color:bisque;
+        font-size:x-large;
+    }
 </style>
-<body>
+<body class= "body">
     <nav class="navbar navbar-dark bg-dark justify-content-center fixed" syle="margin-bottom:20px;">
-        <span class="navbar-brand ">Todays Date: </span> <card type="text" id = "today" style="color:antiquewhite"></card>
+        <div id = "Title" style = "float:left; margin-left:50px;margin-right:50px;">Farhin's Weather App</div>
+        <span class="navbar-brand " id = "date">Today's Date: </span>
+         <card type="text" id = "time" style="color:antiquewhite">Time Now
+        </card>
+
     </nav>
     <div class = "row">
         <div class = "col-lg-3">
-            <div id ="search-bar" class="card" style="width: 18rem; height:100%;">
+            <div id ="search-bar" class="card" style="width: 90%; border:10px;padding:10px;">
                 <label>Search City:</label>
-                <input id="city-input" placeholder="Enter City Here">
+                <input id="city-input" placeholder="Enter City Here" style = "background-color:lightgrey">
                 <button id="searchBtn" type="button" class="btn btn-primary">Search <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" d="M10.442 10.442a1 1 0 0 1 1.415 0l3.85 3.85a1 1 0 0 1-1.414 1.415l-3.85-3.85a1 1 0 0 1 0-1.415z"/>
                     <path fill-rule="evenodd" d="M6.5 12a5.5 5.5 0 1 0 0-11 5.5 5.5 0 0 0 0 11zM13 6.5a6.5 6.5 0 1 1-13 0 6.5 6.5 0 0 1 13 0z"/>
@@ -41,21 +68,24 @@
         </div>
         <div class = "col-lg-9">
             <div class= "container" id = "weather-info">
+                <h1 style = "color:antiquewhite;font-family: 'Courier New', Courier, monospace;margin:10px;font-weight:bolder;">Current Day Weather:</h1>
                 <div id ="current-weather" class="card">
                     <div class="card-body">
                       <h1 class = city-name></h1>
+                      <div id ="icon"></div>
                       <p id = "temp">Temperature:</p>
                       <p id = "humid">Humidity:</p>
                       <p id ="wind">Wind Speed:</p>
                       <p id = "uv">UV Index:</p>
                     </div>
+                    
                 </div>
                 <br><br><br>
-                <h2>5-Day Forcast:</h2>
+                <h2 style = "color:antiquewhite; font-family:'Courier New', Courier, monospace; font-weight: bolder;">5-Day Forcast:</h2>
                 <div class = "row">
-                    <div id ="day-1" class ="card col-lg-2 m-3" style = "background-color: lightskyblue;">
+                    <div id ="day-1" class ="card col-lg-2 m-3">
                         <div class="card-body">
-                            <h5 class="card-title" id = "day1"></h5>
+                            <h5 class="card-title" id = "day1">Day 1</h5>
                             <div id ="img1"></div>
                             <p class="card-text" id = "temp1"> </p> 
                             <p class="card-text" id = "humid1"> </p> 
@@ -114,7 +144,8 @@
 </body>
 </html>
 <script>
-$("#today").text(moment().format("MMM Do YYYY"));   
+$("#date").text(moment().format("MMM Do YYYY"));   
+$("#time").text(moment().format("LT")); 
 
 document.querySelector("#searchBtn").addEventListener("click", 
 function(){
@@ -145,6 +176,11 @@ function buttonSearch(city){
     cityName=city
     getWeatherData()
 }
+function defaultPage(){
+    cityName="Toronto"
+    getWeatherData()
+}
+defaultPage()
 
 function getWeatherData(){
     var queryUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`;
@@ -153,7 +189,8 @@ function getWeatherData(){
         method: "GET",
 
     }).then(function (response){
-        $("#temp").html(`Temp: ${response.main.temp} \xB0C `);
+        var temp = response.main.temp -273.15
+        $("#temp").html(`Temp: ${(temp).toFixed(2)} \xB0C `);
         $(".city-name").html(`${response.name}`);
         $("#wind").html(`Wind: ${response.wind.speed} m/s `);
         $("#humid").html(`Humidity: ${response.main.humidity} %`);
