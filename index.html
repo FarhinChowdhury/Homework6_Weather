@@ -11,6 +11,9 @@
 <style>
     #search-bar{
         margin:20px;
+        width: 100%; 
+        border:10px;
+        padding:10px;
     }
     #current-weather{
         margin-top:20px;
@@ -45,6 +48,12 @@
         color:bisque;
         font-size:x-large;
     }
+    #uv-card{
+        width:5%;
+        padding:3px;
+        color:black;
+    }
+
 </style>
 <body class= "body">
     <nav class="navbar navbar-dark bg-dark justify-content-center fixed" syle="margin-bottom:20px;">
@@ -55,8 +64,8 @@
 
     </nav>
     <div class = "row">
-        <div class = "col-lg-3">
-            <div id ="search-bar" class="card" style="width: 90%; border:10px;padding:10px;">
+        <div class = "col-lg-2">
+            <div id ="search-bar" class="card">
                 <label>Search City:</label>
                 <input id="city-input" placeholder="Enter City Here" style = "background-color:lightgrey">
                 <button id="searchBtn" type="button" class="btn btn-primary">Search <svg width="1em" height="1em" viewBox="0 0 16 16" class="bi bi-search" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
@@ -66,7 +75,7 @@
                 <ul id = "cityHistory"class="list-group"></ul>
               </div>
         </div>
-        <div class = "col-lg-9">
+        <div class = "col-lg-10">
             <div class= "container" id = "weather-info">
                 <h1 style = "color:antiquewhite;font-family: 'Courier New', Courier, monospace;margin:10px;font-weight:bolder;">Current Day Weather:</h1>
                 <div id ="current-weather" class="card">
@@ -82,55 +91,55 @@
                 </div>
                 <br><br><br>
                 <h2 style = "color:antiquewhite; font-family:'Courier New', Courier, monospace; font-weight: bolder;">5-Day Forcast:</h2>
-                <div class = "row">
+                <div class = "row"id = "week-forcast">
                     <div id ="day-1" class ="card col-lg-2 m-3">
-                        <div class="card-body">
-                            <h5 class="card-title" id = "day1">Day 1</h5>
+                        <div class="card-body" style = "padding:5px;padding-top: 10px;">
+                            <h5 id = "day1">Day 1</h5>
                             <div id ="img1"></div>
                             <p class="card-text" id = "temp1"> </p> 
                             <p class="card-text" id = "humid1"> </p> 
                             <p class="card-text" id = "wind1"> </p> 
-                            <p class="card-text" id = "uv1"> </p>              
+                            <p class="card-text uv" id = "uv1"> </p>              
                         </div>
                     </div>
                     <div id ="day-2" class ="card col-lg-2 m-3">
-                        <div class="card-body">
+                        <div class="card-body"style = "padding:5px;padding-top: 10px;">
                             <h5 class="card-title" id = "day2">Day 2</h5>
                             <div id ="img2"></div>
                             <p class="card-text" id = "temp2"> </p> 
                             <p class="card-text" id = "humid2"> </p> 
                             <p class="card-text" id = "wind2"> </p> 
-                            <p class="card-text" id = "uv2"> </p>           
+                            <p class="card-text uv" id = "uv2"> </p>           
                         </div>
                     </div>
                     <div id ="day-3" class ="card col-lg-2 m-3">
-                        <div class="card-body">
+                        <div class="card-body"style = "padding:5px;padding-top: 10px;">
                             <h5 class="card-title"id = "day3">Day 3</h5>
                             <div id ="img3"></div>
                             <p class="card-text" id = "temp3"> </p> 
                             <p class="card-text" id = "humid3"> </p> 
                             <p class="card-text" id = "wind3"> </p> 
-                            <p class="card-text" id = "uv3"> </p>            
+                            <p class="card-text uv" id = "uv3"> </p>            
                         </div>
                     </div>
                     <div id ="day-4" class ="card col-lg-2 m-3">
-                        <div class="card-body">
+                        <div class="card-body"style = "padding:5px;padding-top: 10px;">
                             <h5 class="card-title" id = "day4">Day 4</h5>
                             <div id ="img4"></div>
                             <p class="card-text" id = "temp4"> </p> 
                             <p class="card-text" id = "humid4"> </p> 
                             <p class="card-text" id = "wind4"> </p> 
-                            <p class="card-text" id = "uv4"> </p>           
+                            <p class="card-text uv" id = "uv4"> </p>           
                         </div>
                     </div>
                     <div id ="day-5" class ="card col-lg-2 m-3">
-                        <div class="card-body">
+                        <div class="card-body"style = "padding:5px;padding-top: 10px;">
                             <h5 class="card-title " id = "day5">Day 5</h5>
                             <div id ="img5"></div>
                             <p class="card-text" id = "temp5"> </p> 
                             <p class="card-text" id = "humid5"> </p> 
                             <p class="card-text" id = "wind5"> </p> 
-                            <p class="card-text" id = "uv5"> </p>              
+                            <p class="card-text uv" id = "uv5"> </p>              
                         </div>
                     </div>
             </div>
@@ -153,7 +162,6 @@ function(){
      getWeatherData();
      saveHistory();})
 
-// clear button function:
 //APIS
 var apiKey = "91ef0707ae600515288304e8c5d926b3"
 var cityName = ""
@@ -206,40 +214,61 @@ function getWeatherData(){
         method: "GET",
 
     }).then(function (response){
-        $("#temp1").html(`Temperature: ${response.daily[1].temp.day} \xB0C`);
+        $("#temp1").html(`Temp.: ${response.daily[1].temp.day} \xB0C`);
         $("#day1").text(moment().add(1, "days").format("MMMM Do YYYY"));
-        $("#humid1").html(`Humidity: ${response.daily[1].humidity}%`);
+        $("#humid1").html(`Humd.: ${response.daily[1].humidity}%`);
         $("#img1").html(
-        `<img src="https://openweathermap.org/img/wn/${response.daily[1].weather[0].icon}@2x.png"/>`
-      )
+        `<img src="https://openweathermap.org/img/wn/${response.daily[1].weather[0].icon}@2x.png"/>`);
+        $("#uv1").html(`UV Index: ${response.daily[1].uvi}`);
         
       
-      $("#temp2").html(`Temp: ${response.daily[2].temp.day}`);
+      $("#temp2").html(`Temp.: ${response.daily[2].temp.day}`);
         $("#day2").text(moment().add(2, "days").format("MMMM Do YYYY"));
-        $("#humid2").html(`Humid: ${response.daily[2].humidity}%`);
+        $("#humid2").html(`Humid.: ${response.daily[2].humidity}%`);
         $("#img2").html(
-        `<img src="https://openweathermap.org/img/wn/${response.daily[2].weather[0].icon}@2x.png"/>`
-      );
-      $("#temp3").html(`Temperature: ${response.daily[3].temp.day}`);
-        $("#day3").text(moment().add(3, "days").format("MMMM Do YYYY"));
-        $("#humid3").html(`Humidity: ${response.daily[3].humidity}%`);
-        $("#img3").html(
-        `<img src="https://openweathermap.org/img/wn/${response.daily[3].weather[0].icon}@2x.png"/>`
-      );
-      $("#temp4").html(`Temperature: ${response.daily[4].temp.day}`);
-        $("#day4").text(moment().add(4, "days").format("MMMM Do YYYY"));
-        $("#humid4").html(`Humidity: ${response.daily[4].humidity}%`);
-        $("#img4").html(
-        `<img src="https://openweathermap.org/img/wn/${response.daily[4].weather[0].icon}@2x.png"/>`
-      );
-      $("#temp5").html(`Temperature: ${response.daily[5].temp.day}`);
-        $("#day5").text(moment().add(5, "days").format("MMMM Do YYYY"));
-        $("#humid5").html(`Humidity: ${response.daily[5].humidity}%`);
-        $("#img5").html(
-        `<img src="https://openweathermap.org/img/wn/${response.daily[5].weather[0].icon}@2x.png"/>`
-      );
+        `<img src="https://openweathermap.org/img/wn/${response.daily[2].weather[0].icon}@2x.png"/>`);
+        $("#uv2").html(`UV Index: ${response.daily[2].uvi}`);
 
-    });
+      $("#temp3").html(`Temp.: ${response.daily[3].temp.day}`);
+        $("#day3").text(moment().add(3, "days").format("MMMM Do YYYY"));
+        $("#humid3").html(`Humid.: ${response.daily[3].humidity}%`);
+        $("#img3").html(
+        `<img src="https://openweathermap.org/img/wn/${response.daily[3].weather[0].icon}@2x.png"/>`);
+        $("#uv3").html(`UV Index: ${response.daily[3].uvi}`);
+      $("#temp4").html(`Temp.: ${response.daily[4].temp.day}`);
+        $("#day4").text(moment().add(4, "days").format("MMMM Do YYYY"));
+        $("#humid4").html(`Humid.: ${response.daily[4].humidity}%`);
+        $("#img4").html(
+        `<img src="https://openweathermap.org/img/wn/${response.daily[4].weather[0].icon}@2x.png"/>`);
+        $("#uv4").html(`UV Index: ${response.daily[4].uvi}`);
+      $("#temp5").html(`Temp.: ${response.daily[5].temp.day}`);
+        $("#day5").text(moment().add(5, "days").format("MMMM Do YYYY"));
+        $("#humid5").html(`Humid.: ${response.daily[5].humidity}%`);
+        $("#img5").html(
+        `<img src="https://openweathermap.org/img/wn/${response.daily[5].weather[0].icon}@2x.png"/>`);
+        $("#uv5").html(`UV Index:${response.daily[5].uvi}`);
+
+    })
+    var url3 = `https://api.openweathermap.org/data/2.5/uvi?lat=${lat}&lon=${lon}&appid=${apiKey}`
+    $.ajax({
+        url:url3,
+        method:"GET",
+    }).then(function(response){
+        
+        console.log(response.value)
+        if(response.value<2){
+            document.querySelector("#uv").innerHTML = `<div id= "uv-card"class = "card" style="background-color:skyblue;">${response.value}</div>`
+        } else if(response.value>=2 && response.value<=5){
+            document.querySelector("#uv").innerHTML = `<div id = "uv-card"class = "card" style="background-color:yellow;">${response.value}</div>`
+        }else if(response.value > 5 && response.value <= 7){
+            document.querySelector("#uv").innerHTML = `<div id="uv-card"class = "card" style="background-color:orange;">${response.value}</div>`
+        }else if(response.value >= 8 && response.value <= 10){
+            document.querySelector("#uv").innerHTML = `<div id="uv-card"class = "card" style="background-color:red;">${response.value}</div>`
+        }
+    })
+
+
+
     })
 }
 
