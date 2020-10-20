@@ -1,0 +1,44 @@
+    #search-bar{
+        margin:20px;
+        width: 100%; 
+        border:10px;
+        padding:10px;
+    }
+    #current-weather{
+        margin-top:20px;
+        width:90%;
+    }
+    .col-lg-9{
+        margin-top:10px;
+    }
+    #weather-info{
+        margin-left:10px;
+    }
+    .body{
+        background-color:darkblue;
+        background-image:radial-gradient(rgb(118,182,250),rgb(16,43,82));
+    
+
+    }
+    .card{
+        background-color:rgb(65, 118, 158);
+        color:antiquewhite;
+        font-family: 'Courier New', Courier, monospace;
+        
+    }
+    #current-weather{
+        font-weight:bolder;
+
+    }
+    #cityHistory{
+        background-color:lightgrey;
+    }
+    #Title{
+        color:bisque;
+        font-size:x-large;
+    }
+    #uv-card{
+        width:fit-content;
+        padding:3px;
+        color:black;
+    }

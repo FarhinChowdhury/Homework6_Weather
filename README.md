@@ -4,7 +4,6 @@ by: Farhin Chowdhury
 
 
 ## Description:
-![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg "License Badge")
 
  Create a webpage that will showcase the weather of any city being searched for the current day and for 5 concequtive days after. All the weather information that were used were acquired from OpenWeather APIs. 
 
